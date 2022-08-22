@@ -5,7 +5,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: ebs-cliam-01
+  name: ebs-claim-01
 spec:
   storageClassName: gp2-encrypted 
   accessModes:
@@ -23,15 +23,6 @@ kind: Pod
 metadata:
   name: webserver
 spec:
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        nodeSelectorTerms:
-        - matchExpressions:
-          - key: topology.kubernetes.io/zone
-            operator: In
-            values:
-            - ap-northeast-1d
   containers:
     - name: nginx-container
       image: nginx:latest
@@ -41,4 +32,4 @@ spec:
   volumes:
     - name: test-volume
       persistentVolumeClaim:
-        claimName: ebs-cliam-01
+        claimName: ebs-claim-01
