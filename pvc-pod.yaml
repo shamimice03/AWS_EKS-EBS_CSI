@@ -1,0 +1,35 @@
+---
+
+#PVC definition
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ebs-cliam-01
+spec:
+  storageClassName: gp2-encrypted 
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+ 
+---
+
+#Pod definition
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: webserver
+spec:
+  containers:
+    - name: nginx-container
+      image: nginx:latest
+      volumeMounts:
+      - mountPath: "/usr/share/nginx/html"
+        name: test-volume
+  volumes:
+    - name: test-volume
+      persistentVolumeClaim:
+        claimName: ebs-cliam-01
