@@ -7,8 +7,11 @@ metadata:
 provisioner: ebs.csi.aws.com   # Amazon EBS CSI driver
 parameters:
   type: gp2
+  zones: ap-northeast-1d   # Specifying the AZ where volume will be created
+  fsType: ext4
   encrypted: 'true'   # EBS volumes will always be encrypted by default
 volumeBindingMode: WaitForFirstConsumer
 reclaimPolicy: Delete
 mountOptions:
 - debug
+
