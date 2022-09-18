@@ -1,5 +1,7 @@
 #!/bin/sh
 
+#AWS-CLI, kubectl, and eksctl must be installed first on the system before executing the system.
+
 read -p 'Enter the Cluster Name : ' clustername
 
 export CLUSTER_NAME=$clustername
