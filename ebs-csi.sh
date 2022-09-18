@@ -20,22 +20,25 @@ then
     then
           eksctl utils associate-iam-oidc-provider --cluster $CLUSTER_NAME --approve
     else
-          exit
+          echo "\$OIDC Provider already exists"
     fi
+    
 
     #Create an IAM-POLICY and extract POLICY_ARN
+    curl https://raw.githubusercontent.com/shamimice03/AWS_EKS-EBS_CSI/main/AwsEBSCSIDriverPolicy.json > ebs_csi_policy.json
+    
     aws iam create-policy \
     --policy-name AwsEBSCSIDriverPolicy \
-    --policy-document https://raw.githubusercontent.com/shamimice03/AWS_EKS-EBS_CSI/main/AwsEBSCSIDriverPolicy.json
+    --policy-document file://ebs_csi_policy.json
 
-
+     
     export POLICY_ARN=$(aws iam list-policies --query 'Policies[?PolicyName==`AwsEBSCSIDriverPolicy`].Arn' --output text)
     echo ${POLICY_ARN}
 
 
-    #Configure IAM Role for Service Account
-    export ROLE_NAME=AmazonEKS_EBS_CSI_DriverRole
-    export SA_NAME=ebs-csi-controller-sa
+    #Configure IAM Role for Service Account
+    export ROLE_NAME='AmazonEKS_EBS_CSI_DriverRole'
+    export SA_NAME='ebs-csi-controller-sa'
     eksctl create iamserviceaccount \
         --name ${SA_NAME} \
         --cluster ${CLUSTER_NAME} \
